@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sridhar Velraj — Python Backend Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #181818;
+  --border: #222222;
+  --accent: #e8ff4f;
+  --accent2: #4fffb0;
+  --text: #f0f0f0;
+  --muted: #888888;
+  --muted2: #555555;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;}
+
+/* ── Noise overlay ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid transparent;transition:all 0.3s;}
+nav.scrolled{background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-color:var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--accent);letter-spacing:-0.5px;}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:400;letter-spacing:0.3px;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:0 48px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:0.3;}
+.hero-glow{position:absolute;top:-20%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(232,255,79,0.06) 0%,transparent 70%);pointer-events:none;}
+.hero-glow2{position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(79,255,176,0.05) 0%,transparent 70%);pointer-events:none;}
+.hero-content{position:relative;z-index:1;max-width:900px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:28px;animation:fadeUp 0.6s ease both;}
+.hero-tag span{width:6px;height:6px;background:var(--accent2);border-radius:50%;animation:pulse 2s infinite;}
+.hero-name{font-family:'Syne',sans-serif;font-size:clamp(52px,8vw,96px);font-weight:800;line-height:0.95;letter-spacing:-3px;color:var(--text);margin-bottom:8px;animation:fadeUp 0.6s 0.1s ease both;opacity:0;}
+.hero-name span{color:var(--accent);}
+.hero-role{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,32px);font-weight:400;color:var(--muted);letter-spacing:-0.5px;margin-bottom:28px;animation:fadeUp 0.6s 0.2s ease both;opacity:0;}
+.hero-summary{max-width:580px;font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:40px;animation:fadeUp 0.6s 0.3s ease both;opacity:0;}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp 0.6s 0.4s ease both;opacity:0;}
+.btn-primary{background:var(--accent);color:#0a0a0a;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;letter-spacing:0.3px;transition:all 0.2s;border:none;cursor:pointer;}
+.btn-primary:hover{background:#fff;transform:translateY(-2px);}
+.btn-secondary{background:transparent;color:var(--text);padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:500;font-size:14px;border:1px solid var(--border);transition:all 0.2s;}
+.btn-secondary:hover{border-color:var(--muted2);transform:translateY(-2px);}
+.hero-stats{display:flex;gap:40px;margin-top:60px;padding-top:40px;border-top:1px solid var(--border);animation:fadeUp 0.6s 0.5s ease both;opacity:0;}
+.stat-val{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--text);line-height:1;}
+.stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+
+/* ── SECTIONS ── */
+section{padding:100px 48px;position:relative;}
+.section-label{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:3px;font-weight:600;margin-bottom:12px;}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,48px);font-weight:800;letter-spacing:-1.5px;color:var(--text);margin-bottom:48px;line-height:1.1;}
+.section-title span{color:var(--muted2);}
+
+/* ── EXPERIENCE ── */
+.exp-list{display:flex;flex-direction:column;gap:2px;}
+.exp-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;transition:all 0.3s;cursor:default;}
+.exp-item:hover{border-color:var(--muted2);background:var(--surface2);transform:translateX(4px);}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.exp-left{}
+.exp-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.3px;}
+.exp-company{font-size:14px;color:var(--accent2);margin-top:4px;font-weight:500;}
+.exp-location{font-size:13px;color:var(--muted);margin-top:2px;}
+.exp-date{background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.exp-bullets li{font-size:14px;color:var(--muted);line-height:1.65;padding-left:20px;position:relative;}
+.exp-bullets li::before{content:'→';position:absolute;left:0;color:var(--accent);font-size:12px;top:2px;}
+
+/* ── PROJECTS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all 0.3s;position:relative;overflow:hidden;}
+.project-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,255,79,0.03) 0%,transparent 60%);opacity:0;transition:opacity 0.3s;}
+.project-card:hover{border-color:var(--accent);transform:translateY(-4px);}
+.project-card:hover::before{opacity:1;}
+.project-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--border);line-height:1;margin-bottom:16px;transition:color 0.3s;}
+.project-card:hover .project-num{color:var(--accent);}
+.project-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:8px;}
+.project-co{font-size:13px;color:var(--accent2);font-weight:500;margin-bottom:16px;}
+.project-desc{font-size:14px;color:var(--muted);line-height:1.7;}
+.project-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.tag{background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:4px 12px;font-size:11px;color:var(--muted);letter-spacing:0.3px;}
+
+/* ── SKILLS ── */
+.skills-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;transition:all 0.3s;}
+.skill-card:hover{border-color:var(--muted2);transform:translateY(-2px);}
+.skill-icon{font-size:28px;margin-bottom:12px;}
+.skill-cat{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.skill-items{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-pill{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:13px;color:var(--text);}
+
+/* ── EDUCATION ── */
+.edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;}
+.edu-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;transition:all 0.3s;}
+.edu-card:hover{border-color:var(--muted2);}
+.edu-deg{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:6px;}
+.edu-inst{font-size:14px;color:var(--accent2);font-weight:500;margin-bottom:4px;}
+.edu-year{font-size:13px;color:var(--muted);}
+
+/* ── CONTACT ── */
+.contact-inner{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:32px;}
+.contact-text .big{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-1.5px;color:var(--text);margin-bottom:12px;}
+.contact-text .sub{font-size:16px;color:var(--muted);max-width:400px;}
+.contact-links{display:flex;flex-direction:column;gap:12px;}
+.contact-link{display:flex;align-items:center;gap:12px;color:var(--muted);text-decoration:none;font-size:15px;transition:color 0.2s;padding:12px 20px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
+.contact-link:hover{color:var(--text);border-color:var(--muted2);}
+.contact-link .icon{width:36px;height:36px;background:var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+
+/* ── FOOTER ── */
+footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+footer p{font-size:13px;color:var(--muted2);}
+.footer-accent{color:var(--accent);font-weight:600;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .hero,.section,footer{padding-left:24px;padding-right:24px;}
+  .contact-inner{padding:32px 24px;}
+  .hero-stats{gap:24px;}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">SV</div>
+  <div class="nav-links">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-tag"><span></span> </div>
+    <h1 class="hero-name">Sridhar<br/><span>Velraj</span></h1>
+    <p class="hero-role">Python Backend Developer</p>
+    <p class="hero-summary">Building data-driven web applications and automated scraping pipelines. Proficient in Django, FastAPI, PostgreSQL and AWS — comfortable taking a feature from schema design through to production.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get in Touch</a>
+      <a href="#experience" class="btn-secondary">View My Work</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">2+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-val">5+</div>
+        <div class="stat-label">Technologies</div>
+      </div>
+      <div>
+        <div class="stat-val">2</div>
+        <div class="stat-label">Key Projects</div>
+      </div>
+      <div>
+        <div class="stat-val">3</div>
+        <div class="stat-label">Frameworks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label reveal">Career</div>
+  <h2 class="section-title reveal">Work <span>Experience</span></h2>
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-title">Python Developer</div>
+          <div class="exp-company">Prowen Technologies</div>
+          <div class="exp-location">Coimbatore, Tamil Nadu</div>
+        </div>
+        <div class="exp-date">Jun 2024 — Present</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Built and maintained backend web applications using Python and Django, delivering end-to-end features from database schema design through to API integration with frontend components.</li>
+        <li>Designed and deployed automated web scraping pipelines using BeautifulSoup, Requests, and Selenium to extract and structure large volumes of data from multiple web sources.</li>
+        <li>Architected and optimized PostgreSQL schemas for complex data models, improving query performance and ensuring reliable data storage across projects.</li>
+        <li>Developed and integrated RESTful API endpoints consumed by frontend clients, enabling seamless full-stack application functionality.</li>
+        <li>Collaborated in cross-functional teams delivering hotel analytics and institutional management systems from requirements through production deployment.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-title">Software Support Engineer</div>
+          <div class="exp-company">Rovan Software Solution</div>
+          <div class="exp-location">Sivakasi, Tamil Nadu</div>
+        </div>
+        <div class="exp-date">Jan 2022 — Jan 2023</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Provided technical support and software installation services to clients, ensuring smooth onboarding and system operations.</li>
+        <li>Set up and maintained PostgreSQL data workflows, including database configuration and troubleshooting for client environments.</li>
+        <li>Served as a key point of contact for resolving technical issues, building strong client communication and problem-solving discipline.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-left">
+          <div class="exp-title">Backend Development Intern</div>
+          <div class="exp-company">Prowen Technologies</div>
+          <div class="exp-location">Coimbatore, Tamil Nadu</div>
+        </div>
+        <div class="exp-date">Internship</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Worked on backend development using Python for data extraction and processing.</li>
+        <li>Developed web scraping scripts using BeautifulSoup, Requests, and Selenium.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-label reveal">Work</div>
+  <h2 class="section-title reveal">Key <span>Projects</span></h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-name">Hotel Analytics Platform</div>
+      <div class="project-co">Prowen Technologies</div>
+      <p class="project-desc">A competitive intelligence platform that scraped and consolidated hotel data — pricing, ratings, availability, and reviews — from multiple web sources. Processed competitor data to surface actionable business insights and decision-support dashboards for hotel clients.</p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">BeautifulSoup</span>
+        <span class="tag">Selenium</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">Django</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <div class="project-name">School & College Management System</div>
+      <div class="project-co">Prowen Technologies</div>
+      <p class="project-desc">End-to-end institution management platform covering student management, faculty allocation, examination scheduling, and result generation. Streamlined academic and administrative workflows for institutional clients.</p>
+      <div class="project-tags">
+        <span class="tag">Django</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">Python</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">Expertise</div>
+  <h2 class="section-title reveal">Technical <span>Skills</span></h2>
+  <div class="skills-container">
+    <div class="skill-card reveal">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-cat">Languages</div>
+      <div class="skill-items"><span class="skill-pill">Python</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">⚡</div>
+      <div class="skill-cat">Frameworks</div>
+      <div class="skill-items">
+        <span class="skill-pill">Django</span>
+        <span class="skill-pill">FastAPI</span>
+        <span class="skill-pill">Flask</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-cat">Database</div>
+      <div class="skill-items"><span class="skill-pill">PostgreSQL</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔗</div>
+      <div class="skill-cat">APIs</div>
+      <div class="skill-items">
+        <span class="skill-pill">REST APIs</span>
+        <span class="skill-pill">Third-party integrations</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🕷️</div>
+      <div class="skill-cat">Web Scraping</div>
+      <div class="skill-items">
+        <span class="skill-pill">BeautifulSoup</span>
+        <span class="skill-pill">Selenium</span>
+        <span class="skill-pill">Requests</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-cat">Cloud & Tools</div>
+      <div class="skill-items">
+        <span class="skill-pill">AWS EC2</span>
+        <span class="skill-pill">AWS RDS</span>
+        <span class="skill-pill">AWS Lambda</span>
+        <span class="skill-pill">Power BI</span>
+        <span class="skill-pill">Cronicle</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-label reveal">Background</div>
+  <h2 class="section-title reveal">Education & <span>Certification</span></h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-deg">Bachelor of Computer Science</div>
+      <div class="edu-inst">Madurai Kamaraj University</div>
+      <div class="edu-year">Jun 2018 — May 2021</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-deg">Python Certification Course</div>
+      <div class="edu-inst">Qtree Technologies</div>
+      <div class="edu-year">Feb 2023 — Jul 2023</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="contact-text">
+      <div class="big">Let's work<br/>together.</div>
+      <div class="sub">Open to Backend Developer roles in Coimbatore and Chennai. Mid-size companies and MNCs welcome.</div>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:sridhar0206velraj@gmail.com" class="contact-link">
+        <div class="icon">✉</div>
+        sridhar0206velraj@gmail.com
+      </a>
+      <a href="tel:+917397631949" class="contact-link">
+        <div class="icon">📞</div>
+        +91 73976 31949
+      </a>
+      <a href="https://linkedin.com/in/sridhar-velraj" target="_blank" class="contact-link">
+        <div class="icon">in</div>
+        linkedin.com/in/sridhar-velraj
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <span class="footer-accent">Sridhar Velraj</span>. All rights reserved.</p>
+  <p style="font-size:13px;color:var(--muted2);">Python Backend Developer · Coimbatore, Tamil Nadu</p>
+</footer>
+
+<script>
+// Navbar scroll
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
